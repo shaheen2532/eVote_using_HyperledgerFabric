@@ -93,6 +93,7 @@ export class AppComponent {
         this.router.navigateByUrl("/college-home");
     }else {
       this.dataService.removeLoggedUser();
+      sessionStorage.removeItem("user");
       this.router.navigateByUrl("/");
     }
     console.log("logged out");

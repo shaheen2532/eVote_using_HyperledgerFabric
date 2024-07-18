@@ -3,7 +3,7 @@
         <div class="field has-addons">
           <label class="label">Username: &nbsp;&nbsp;&nbsp;&nbsp;</label>
           <div class="control">
-            <input id="editInp" class="input is-success form-control" type="text" formControlName = "username" [(ngModel)]="userObj.username" [readOnly]="!isEdit" #newUserName>
+            <input id="editInp" class="input is-success form-control" type="text" formControlName = "username" [(ngModel)]="user.username" [readOnly]="!isEdit" #newUserName>
           </div>
           <div class="control">
             <button (click)="toggle()" id="editButton" class="button is-primary">
@@ -15,7 +15,7 @@
         </div>
 
         <div>
-          <input id="id" class="input is-success form-control" type="text" formControlName = "id" [(ngModel)]="userObj._id" #id>
+          <input id="id" class="input is-success form-control" type="text" formControlName = "id" [(ngModel)]="user._id" #id>
         </div>
 
         <div class="field">

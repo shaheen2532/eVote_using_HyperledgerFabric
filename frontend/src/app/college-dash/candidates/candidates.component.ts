@@ -6,6 +6,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../../data.service';
 import Swal from 'sweetalert2';
 import axios from 'axios';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-candidates',
@@ -20,24 +21,26 @@ export class CandidatesComponent {
   elecName = this.dataService.getElecName();
   candForm = {
     cand_name: '',
-    promise: '',
     video: '',
   }
   candArray: any [] = [];
+  file: any;
+  link: any;
 
   addCand(){
+    console.log(this.link);
     const data = {
       cand_name: this.candForm.cand_name, 
-      promise: this.candForm.promise,
+      promise: this.link,
     }
     this.candArray.push(data);
     console.log(this.candArray);
     this.candForm.cand_name = '';
-    this.candForm.promise = '';
+    this.candForm.video = '';
   }
 
   async setCands(){
-    const set = await fetch("http://localhost:5000/api/auth/newCandidate",{
+    const set = await fetch(environment.apiUrl+"/newCandidate",{
       method: 'POST',
       body: JSON.stringify({
         election_name: this.elecName,
@@ -66,5 +69,21 @@ export class CandidatesComponent {
         timer: 2000,
       });
     }
-  }
+  } 
+
+  async select(event: any){
+    if(event.target.files.length > 0){}
+    this.file = event.target.files[0];
+    const videoData = new FormData();
+    videoData.append("file", this.file);
+    videoData.append("upload_preset", "videos");
+
+    const resource_type = 'video';
+    const cloudName = 'dwlwpqhta';
+    const api = `https://api.cloudinary.com/v1_1/${cloudName}/${resource_type}/upload`;
+    const res = await axios.post<any>(api, videoData);
+    const p = res.data.secure_url;
+    console.log(p);
+    this.link = p;
+  } 
 }

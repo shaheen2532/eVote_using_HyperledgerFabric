@@ -1,10 +1,13 @@
-<div class="container">
+<div class="container" *ngIf="flag">
     <div class="container">
         <div class="card" *ngFor="let item of pastElecs">
             <p>{{ item.election_name }}</p>
             <button (click)="showResult(item.election_name)" class="button is-primary">Show Result</button>
         </div>
     </div>
+</div>
+<div class="container" *ngIf="flag2">
+    <p class="text">No past elections to show!</p>
 </div>
 <div id="relative" class="hide"> 
 <div class="card" id="popup">

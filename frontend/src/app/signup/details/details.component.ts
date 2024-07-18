@@ -5,7 +5,6 @@ import { FormGroup, FormsModule, ReactiveFormsModule, FormControl, Validators } 
 import { AccDetailsComponent } from '../acc-details/acc-details.component';
 import { DataService } from '../../data.service';
 
-
 @Component({
   selector: 'app-details',
   standalone: true,

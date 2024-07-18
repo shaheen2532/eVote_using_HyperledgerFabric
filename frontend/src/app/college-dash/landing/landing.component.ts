@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DataService } from '../../data.service';
 import { RouterOutlet, RouterLink, Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-landing',
@@ -31,14 +32,14 @@ export class LandingComponent implements OnInit{
   elections: any [] = [];
 
   async getRequests(){
-    const requests = await fetch('http://localhost:5000/api/auth/getRequests', {
+    const requests = await fetch(environment.apiUrl+'/getRequests', {
       method: 'GET',
     })
     const resData = await requests.json();
     console.log(resData);
     this.requests = resData.data;
 
-    const course = await fetch('http://localhost:5000/api/auth/getCourses', {
+    const course = await fetch(environment.apiUrl+'/getCourses', {
       method: 'GET',
     })
     const courseResp = await course.json();
@@ -68,14 +69,20 @@ export class LandingComponent implements OnInit{
     Swal.fire({
       title: this.curRequest.first_name + ' ' + this.curRequest.last_name,
       text: 'Mobile: ' + this.curRequest.mob+ ', '+ 'E-Mail: '+ this.curRequest.email
-            + 'Course: ' + this.curRequest.course+ ',' + 'Branch: '+this.curRequest.branch+
-            'Year of study: '+this.curRequest.year,
+            + ',        '+'Course: ' + this.curRequest.course+ ',  ' + 'Branch: '+this.curRequest.branch+
+            ', '+'Year of study: '+this.curRequest.year,
       icon: 'info',
       width: '40%',
-      confirmButtonText: 'Authorize'
+      confirmButtonText: 'Authorize',
+      showCancelButton: true,
+      customClass: {
+        actions: 'my-actions',
+        cancelButton: 'order-1 right-gap',
+        confirmButton: 'order-2',
+      },
     }).then(async (result) => {
       if(result.isConfirmed){
-        const req3 = await fetch('http://localhost:5000/api/auth/authRequest',{
+        const req3 = await fetch(environment.apiUrl+'/authRequest',{
           method: 'POST',
           body: JSON.stringify({
             email: this.curRequest.email,
@@ -106,7 +113,7 @@ export class LandingComponent implements OnInit{
 
   async ngOnInit(): Promise<void> {
     this.getRequests();
-    const getElecs = await fetch("http://localhost:5000/api/auth/getElections", {
+    const getElecs = await fetch(environment.apiUrl+"/getElections", {
       method: 'POST',
       body: JSON.stringify({
         collegeName: this.loggedAdmin.college_name,

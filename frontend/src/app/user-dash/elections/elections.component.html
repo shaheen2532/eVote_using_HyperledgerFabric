@@ -1,4 +1,4 @@
-<div class="container">
+<div *ngIf="flag"  class="container">
         <div class="card" *ngFor="let item of elecsFil">
             <div>
                 <p>{{ item.election_name }}</p>
@@ -6,6 +6,9 @@
                 <button (click)="showCands(item.election_name)" class="button is-primary">Show candidates</button>
             </div>
         </div>
+</div> 
+<div *ngIf="flag2" class="container">
+    <p class="text">No elections to show!</p>
 </div>
 <div id="relative" class="hide"> 
     <div class="card" id="popup">
@@ -13,7 +16,10 @@
         <div id="inner-cont">
             <div class="card" *ngFor="let item of candsFil">
                 <p class="text">{{ item.cand_name }}</p>
-                <p>{{ item.election_promise }}</p>
+                <video width="200" controls>
+                    <source src="{{item.election_promise}}" type="video/mp4">
+                        Your browser does not support the video tag.
+                    </video>
                 <button (click)="vote(item.cand_name)" id="butt" class="button is-info">VOTE</button>
             </div> 
             <button (click)="close()" id="closeButton" class="button is-primary is-large">Close</button>

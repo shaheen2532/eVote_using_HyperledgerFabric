@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../data.service';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-past-elections',
@@ -12,16 +13,19 @@ import { DataService } from '../../data.service';
 export class PastElectionsComponent implements OnInit{
   constructor(private dataService: DataService){}
   curElection: any;
-  college = this.dataService.getLoggedUser().college;
+  user = sessionStorage.getItem("user");
+  college: any; //= this.dataService.getLoggedUser().college;
   result: any;
   elections: any [] = [];
   pastElecs: any [] = [];
   resultsLoaded: Promise<boolean> = Promise.resolve(false);
+  flag: boolean = false;
+  flag2: boolean = true; 
   
   async showResult(electionName: string){
     this.curElection = electionName;
 
-    const result = await fetch("http://localhost:5000/api/auth/getResults", {
+    const result = await fetch(environment.apiUrl+"/getResults", {
       method: 'POST',
       body: JSON.stringify({
         elecName: electionName,
@@ -49,7 +53,9 @@ export class PastElectionsComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    const elections = await fetch("http://localhost:5000/api/auth/getElections", {
+    if(this.user)
+    this.college = JSON.parse(this.user).college;
+    const elections = await fetch(environment.apiUrl+"/getElections", {
       method: 'POST',
       body: JSON.stringify({
         collegeName: this.college,
@@ -62,6 +68,10 @@ export class PastElectionsComponent implements OnInit{
       if(item.finished == true){
         this.pastElecs.push(item);
       }
+    }
+    if(this.pastElecs.length != 0){
+      this.flag = true;
+      this.flag2 = false;
     }
     console.log(this.pastElecs);
     this.resultsLoaded = Promise.resolve(true);

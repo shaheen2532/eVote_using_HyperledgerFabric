@@ -4,6 +4,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'app-college-select',
@@ -32,7 +33,7 @@ export class CollegeSelectComponent implements OnInit{
     this.getColleges();
   }
   async getColleges(){
-    const Colleges = await fetch("http://localhost:5000/api/auth/getColleges", {
+    const Colleges = await fetch(environment.apiUrl+"/getColleges", {
       method: 'GET',
     });
     const resData = await Colleges.json();
@@ -47,7 +48,7 @@ export class CollegeSelectComponent implements OnInit{
   }
 
   async getCourses(){
-    const courses = await fetch("http://localhost:5000/api/auth/getCourses",  {
+    const courses = await fetch(environment.apiUrl+"/getCourses",  {
       method: 'POST',
       body: JSON.stringify({
         college: this.collegeValue
@@ -95,7 +96,7 @@ export class CollegeSelectComponent implements OnInit{
   
   async sendRequest(){
     const userData = this.dataService.getLoggedUser();
-    const reqResp = await fetch("http://localhost:5000/api/auth/sendRequest", {
+    const reqResp = await fetch(environment.apiUrl+"/sendRequest", {
       method: 'POST',
       body: JSON.stringify({
         college: this.collegeValue,

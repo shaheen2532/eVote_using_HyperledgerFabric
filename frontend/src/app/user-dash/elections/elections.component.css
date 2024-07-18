@@ -39,7 +39,7 @@
 
 #inner-cont .card {
     width: 30%;
-    height: 150px;
+    height: 250px;
     margin-right: -3%;
 } 
 
@@ -54,5 +54,5 @@
 
 #closeButton {
     margin-top: 50%;
-    margin-left: -53%;
+    margin-left: 10%;
 }

@@ -8,16 +8,16 @@
         </div>
         <div class="mb-4">
             <p class="title is-3 has-text-grey-dark">
-                {{ userObj.first_name }} {{ userObj.last_name }}
+                {{ use.first_name }} {{ use.last_name }}
             </p>
         </div> 
         <section class="info-tiles">
             <div class="tile is-ancestor has-text-left">
                 <div class="tile is-parent">
                     <article class="tile is-child box">
-                        <p class="title is-5 mb-3">Username: {{ userObj.username }}</p>
-                        <p class="title is-5 mb-3">E-Mail: {{ userObj.email }}</p>
-                        <p class="title is-5">Mobile No: {{ userObj.mob_no }}</p>
+                        <p class="title is-5 mb-3">Username: {{ use.username }}</p>
+                        <p class="title is-5 mb-3">E-Mail: {{ use.email }}</p>
+                        <p class="title is-5">Mobile No: {{ use.mob_no }}</p>
                         <a class="button is-primary" routerLink="/user-dash/editAcc">
                             <span class="icon is-small">
                                 <i class="fas fa-edit"></i>
@@ -33,10 +33,10 @@
                             <div class="load"></div>
                         </div>
                         <div *ngIf="collegeUpdated">
-                            <p class="title is-5 mb-3">College: {{ userObj.college }}</p>
-                            <p class="title is-5 mb-3">Course: {{ userObj.course }}</p>
-                            <p class="title is-5 mb-3">Branch: {{ userObj.branch }}</p>
-                            <p class="title is-5">Year of study: {{ userObj.year }}</p>
+                            <p class="title is-5 mb-3">College: {{ use.college }}</p>
+                            <p class="title is-5 mb-3">Course: {{ use.course }}</p>
+                            <p class="title is-5 mb-3">Branch: {{ use.branch }}</p>
+                            <p class="title is-5">Year of study: {{ use.year }}</p>
                             <a class="button is-primary">
                                 <span class="icon is-small">
                                     <i class="fas fa-edit"></i>

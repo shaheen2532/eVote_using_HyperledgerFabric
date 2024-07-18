@@ -5,7 +5,7 @@ import { FormControl, FormGroup } from '@angular/forms';
 import { HttpClient, HttpClientModule } from '@angular/common/http';
 import { Router } from '@angular/router';
 import axios, { AxiosResponse, AxiosError } from 'axios';
-// import {v2 as cloudinary} from 'cloudinary';
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'app-photo-select',
@@ -22,20 +22,8 @@ export class PhotoSelectComponent{
     const formData = new FormData();
     formData.append('data', this.file);
     console.log(this.file);
-    this.http.post("http://localhost:5000/api/savePhoto", formData).subscribe(async (res: any) => {
-      console.log(res.file);
-      const resp = await fetch("http://localhost:5000/api/auth/updatePhoto", {
-        method: 'POST',
-        body: JSON.stringify({
-          file: res.file,
-          username: this.user.username,
-        }),
-        headers: {'Content-type' : 'application/json'},
-      })
-      const updateRes = resp.json();
-      console.log(updateRes);
-    })
-    // // Configuration
+    
+    // Configuration
     // cloudinary.config({ 
     //   cloud_name: "dwlwpqhta", 
     //   api_key: "193241841372562", 
@@ -43,8 +31,8 @@ export class PhotoSelectComponent{
     // });
   
     // // Upload an image
-    // const uploadResult = await cloudinary.uploader.upload("https://res.cloudinary.com/demo/image/upload/getting-started/shoes.jpg", {
-    //     public_id: "shoes"
+    // const uploadResult = await cloudinary.uploader.upload( this.file, {
+    //     public_id: "profile_photos"
     // }).catch((error)=>{console.log(error)});
   
     // console.log(uploadResult);  
@@ -67,7 +55,7 @@ export class PhotoSelectComponent{
     const p = res.data.secure_url;
     console.log(p);
 
-    const imageUpdate = await fetch("http://localhost:5000/api/auth/updatePhoto", {
+    const imageUpdate = await fetch(environment.apiUrl+"/updatePhoto", {
       method: 'POST',
       body: JSON.stringify({
         file: p,

@@ -8,7 +8,10 @@
             <div class="container">
                 <div class="card">
                     <p class="text is-size-3">{{item.cand_name}}</p>
-                    <p class="text is-size-5">{{item.election_promise}}</p>
+                    <video width="300" controls>
+                        <source src="{{item.election_promise}}" type="video/mp4">
+                        Your browser does not support the video tag.
+                      </video>
                 </div>
             </div>
         </div>

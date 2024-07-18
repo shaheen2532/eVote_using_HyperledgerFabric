@@ -5,6 +5,7 @@ import { FormsModule } from '@angular/forms';
 import { DataService } from '../data.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'app-courses',
@@ -40,7 +41,7 @@ export class CoursesComponent {
   }
 
   async setData(){
-    const set = await fetch("http://localhost:5000/api/auth/setCourse",{
+    const set = await fetch(environment.apiUrl+"/setCourse",{
       method: 'POST',
       body: JSON.stringify({
         collegeName: this.admin.college_name,
@@ -51,7 +52,7 @@ export class CoursesComponent {
 
     const setResp = await set.json();
     if(setResp.courseCreated == true){
-      const setFlag = await fetch("http://localhost:5000/api/auth/setCourseUpdated", {
+      const setFlag = await fetch(environment.apiUrl+"/setCourseUpdated", {
         method: 'POST',
         body: JSON.stringify({
           email: this.admin.email,

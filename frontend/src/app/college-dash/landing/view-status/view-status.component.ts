@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DataService } from '../../../data.service';
 import { Router } from '@angular/router';
 import Swal from 'sweetalert2';
+import { environment } from '../../../../environments/environment.development';
 
 @Component({
   selector: 'app-view-status',
@@ -30,7 +31,7 @@ export class ViewStatusComponent implements OnInit{
     }).then(async (result) => {
       if (result.isConfirmed) {
         console.log(this.elecName);
-        const stop = await fetch("http://localhost:5000/api/auth/stopElec", {
+        const stop = await fetch(environment.apiUrl+"/stopElec", {
           method: 'POST',
           body: JSON.stringify({
             elec_Name: this.elecName
@@ -50,7 +51,7 @@ export class ViewStatusComponent implements OnInit{
           }
           console.log(this.winner);
         }
-        const result = await fetch("http://localhost:5000/api/auth/pubResults", {
+        const result = await fetch(environment.apiUrl+"/pubResults", {
           method: 'POST',
           body: JSON.stringify({
             election_name: this.elecName,
@@ -70,7 +71,7 @@ export class ViewStatusComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    const cands = await fetch("http://localhost:5000/api/auth/getCandidates", {
+    const cands = await fetch(environment.apiUrl+"/getCandidates", {
       method: 'GET',
     }) 
     const candsResp = await cands.json();

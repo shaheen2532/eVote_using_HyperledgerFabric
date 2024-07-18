@@ -5,6 +5,7 @@ import { CollegeDashComponent } from '../college-dash/college-dash.component';
 import { startAuthentication } from '@simplewebauthn/browser';
 import { client, server } from "@passwordless-id/webauthn";
 import { Router } from '@angular/router';
+import { environment } from '../../environments/environment.development';
 
 
 @Component({
@@ -19,7 +20,7 @@ export class CollegeLoginComponent {
 
   async login(email: string, password: string){
     try {
-      const res = await fetch('http://localhost:5000/api/auth/loginAdmin', {
+      const res = await fetch(environment.apiUrl+'/loginAdmin', {
         method: 'POST',
         body: JSON.stringify({ email: email, password: password }),
         headers: { 'Content-Type': 'application/json' }
@@ -29,7 +30,7 @@ export class CollegeLoginComponent {
       if (res.status === 400 || res.status === 401) {
         console.log(data.message);
       }else{
-        const resData = await fetch('http://localhost:5000/api/auth/getAdmin',{
+        const resData = await fetch(environment.apiUrl+'/getAdmin',{
           method: 'POST',
           body: JSON.stringify({ email: email }),
           headers: { 'Content-Type': 'application/json' }
@@ -48,7 +49,7 @@ export class CollegeLoginComponent {
             "timeout": 60000
           })
         try{
-          const getCred = await fetch('http://localhost:5000/api/auth/getAdminCredential', {
+          const getCred = await fetch(environment.apiUrl+'/getAdminCredential', {
             method: 'POST',
             body: JSON.stringify({ email: email }),
             headers: { 'Content-Type': 'application/json' }
@@ -62,7 +63,7 @@ export class CollegeLoginComponent {
 
           const expected = {
             challenge: challenge,
-            origin: "http://localhost:4200",
+            origin: environment.host,
             userVerified: true,
             counter: 0
           }

@@ -8,6 +8,7 @@ import { server } from '@passwordless-id/webauthn'
 import { ElementRef } from '@angular/core';
 import { passwordValidator } from '../../validators/passValidator';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-acc-details',
@@ -39,7 +40,7 @@ export class AccDetailsComponent {
         let user = this.dataService.getSharedData();
         console.log(user);
         try{
-          const res = await fetch("http://localhost:5000/api/auth/register", {
+          const res = await fetch(environment.apiUrl+"/register", {
             method: 'POST',
             body: JSON.stringify({
               username : username,
@@ -66,12 +67,12 @@ export class AccDetailsComponent {
             let jsonReg = JSON.stringify(registration);
             const expected = {
               challenge: challenge,
-              origin: "http://localhost:4200",
+              origin: environment.host,
             }
             const registrationParsed = await server.verifyRegistration(registration, expected);
             console.log("Credential");
             console.log(registrationParsed.credential.publicKey);
-            const res2 = await fetch("http://localhost:5000/api/auth/setCredential", {
+            const res2 = await fetch(environment.apiUrl+"/setCredential", {
               method: 'POST',
               body: JSON.stringify({
                 username: username,

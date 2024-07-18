@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../data.service';
 import { Router } from '@angular/router';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-view-results',
@@ -23,7 +24,7 @@ export class ViewResultsComponent implements OnInit{
     const elec = this.dataService.getElecName();
     this.elecName = elec
     console.log(elec);
-    const res = await fetch("http://localhost:5000/api/auth/getResults", {
+    const res = await fetch(environment.apiUrl+"/getResults", {
       method: 'POST',
       body: JSON.stringify({
         elecName: elec,

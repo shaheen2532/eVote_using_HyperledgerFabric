@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { DataService } from '../../data.service';
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-elections',
@@ -20,7 +21,10 @@ export class ElectionsComponent implements OnInit{
   candsFil: any [] = [];
   curCands: any [] = [];
   curElection: any = "cur";
-  user = this.dataService.getLoggedUser();
+  use = sessionStorage.getItem("user");
+  user: any;
+  flag: boolean = false;
+  flag2: boolean = true;
 
   async showCands(electionName: string){
     this.curElection = electionName;
@@ -31,7 +35,7 @@ export class ElectionsComponent implements OnInit{
       card?.classList.add("hide");
     }
 
-    const candidates = await fetch("http://localhost:5000/api/auth/getCandidates", {
+    const candidates = await fetch(environment.apiUrl+"/getCandidates", {
       method: 'GET',
     });
     const candidatesResp = await candidates.json();
@@ -55,7 +59,7 @@ export class ElectionsComponent implements OnInit{
     }).then(async (result) => {
       if(result.isConfirmed){
         console.log(this.curElection);
-        const voted = await fetch("http://localhost:5000/api/auth/setVote", {
+        const voted = await fetch(environment.apiUrl+"/setVote", {
           method: 'POST',
           body: JSON.stringify({
             cand_name: candName,
@@ -87,28 +91,34 @@ export class ElectionsComponent implements OnInit{
   }
 
   async ngOnInit(): Promise<void> {
-    console.log(this.user);
+    if(this.use)
+    this.user = JSON.parse(this.use);
     let collegeName = this.dataService.getLoggedUser().college;
-    const elections = await  fetch("http://localhost:5000/api/auth/getElections", {
+    const elections = await  fetch(environment.apiUrl+"/getElections", {
       method: 'POST',
       body: JSON.stringify({
         collegeName: collegeName
       }),
       headers: {'Content-type':'application/json'}
     });
+
     const electionsResp = await elections.json();
-    this.elections = electionsResp.data;
-    console.log(this.elections);
-    for(let e of this.elections){
-      if(!this.user.votedElections.includes(e)){
-        this.elecsMid.push(e)
+      this.elections = electionsResp.data;
+      console.log(this.elections);
+      for(let e of this.elections){
+        if(!this.user.votedElections.includes(e)){
+          this.elecsMid.push(e)
+        }
       }
-    }
-    console.log(this.elecsMid);
-    for(let i of this.elecsMid){
-      if(i.finished == false){
-        this.elecsFil.push(i);
+      console.log(this.elecsMid);
+      for(let i of this.elecsMid){
+        if(i.finished == false){
+          this.elecsFil.push(i);
+        }
+      } 
+      if(this.elecsFil.length != 0){
+        this.flag = true;
+        this.flag2 = false;
       }
-    }
   }
 }

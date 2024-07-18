@@ -40,12 +40,14 @@
                 </div>
             </div>
         </div>
-        <div id="scroll" class="column">
-            <div class="container" *ngFor="let item of coursesArray">
-                <div id="card-cont" class="card">
-                    <p class="text big"><b>{{ item.course }}</b></p>
-                    <p class="text">Branch: {{ item.branch }}</p>
-                    <p class="text">Duration: {{ item.years }} years</p>
+        <div class="column">
+            <div id="scroll">
+                <div class="container" *ngFor="let item of coursesArray">
+                    <div id="card-cont" class="card">
+                        <p class="text big"><b>{{ item.course }}</b></p>
+                        <p class="text">Branch: {{ item.branch }}</p>
+                        <p class="text">Duration: {{ item.years }} years</p>
+                    </div>
                 </div>
             </div>
         </div>

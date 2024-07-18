@@ -14,10 +14,14 @@ import { ProfileComponent } from './profile/profile.component';
 })
 export class UserDashComponent {
   constructor(private dataService: DataService){}
+  us = sessionStorage.getItem("user");
+  user: any;
 
   buttonStatus = false;
   ngOnInit(){
-    if(this.userObj.college == "NU"){
+    if(this.us)
+    this.user = JSON.parse(this.us);
+    if(this.user.college == "NU"){
       this.buttonStatus = true;
     }
   }

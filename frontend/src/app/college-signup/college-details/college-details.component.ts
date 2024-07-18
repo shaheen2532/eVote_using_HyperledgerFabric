@@ -7,6 +7,7 @@ import { DataService } from '../../data.service';
 import { client } from '@passwordless-id/webauthn' 
 import { server } from '@passwordless-id/webauthn' 
 import Swal from 'sweetalert2';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-college-details',
@@ -48,7 +49,7 @@ export class CollegeDetailsComponent {
     console.log(password);
     //api endpoint for admin registration.
     try{
-      const regRes = await fetch('http://localhost:5000/api/auth/electionAdminRegister', {
+      const regRes = await fetch(environment.apiUrl+'/electionAdminRegister', {
         method: "POST",
         body: JSON.stringify({
           first_name: f_name,
@@ -82,13 +83,13 @@ export class CollegeDetailsComponent {
         let jsonReg = JSON.stringify(registration);
         const expected = {
           challenge: challenge,
-          origin: "http://localhost:4200",
+          origin: environment.host,
         }
         const registrationParsed = await server.verifyRegistration(registration, expected);
         console.log("Credential");
         console.log(registrationParsed.credential.publicKey);
 
-        const res2 = await fetch("http://localhost:5000/api/auth/setAdminCredential", {
+        const res2 = await fetch(environment.apiUrl+"/setAdminCredential", {
           method: 'POST',
           body: JSON.stringify({
             email: electionAdmin.email,

@@ -3,6 +3,7 @@ import { CommonModule } from '@angular/common';
 import { DataService } from '../../data.service';
 import { RouterLink } from '@angular/router';
 import axios, { AxiosResponse, AxiosError } from 'axios';
+import { environment } from '../../../environments/environment.development';
 
 @Component({
   selector: 'app-profile',
@@ -16,33 +17,38 @@ export class ProfileComponent implements OnInit{
   collegeUpdated = false;
 
   userObj = this.dataService.getLoggedUser();
+  us = sessionStorage.getItem("user");
+  use: any;
   
   button1 = document.getElementsByClassName('check')[0];
   button2 = document.getElementsByClassName('check')[1];
 
   photoValue: any;
   async check(){
-    console.log(this.userObj.image);
-    if(this.userObj.college != "NU"){
+    console.log(this.use.image);
+    if(this.use.college != "NU"){
       this.button1.removeAttribute("disabled");
       this.button2.removeAttribute("disabled");
     }
   }
 
   async ngOnInit(): Promise<void> {
+    if(this.us){
+      this.use = JSON.parse(this.us);
+    }
     this.check();
-    if(this.userObj.college == "NU"){
+    if(this.use.college == "NU"){
       this.collegeUpdated = false;
     } else {
       this.collegeUpdated = true;
     } 
-    console.log(this.userObj.college);
+    console.log(this.use.college);
     console.log(this.collegeUpdated);
 
-    const image = await fetch("http://localhost:5000/api/auth/getUser", {
+    const image = await fetch(environment.apiUrl+"/getUser", {
       method: 'POST',
       body: JSON.stringify({
-        username: this.userObj.username,
+        username: this.use.username,
       }),
       headers: {'Content-type':'application/json'},
     });

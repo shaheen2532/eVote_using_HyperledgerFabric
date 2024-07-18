@@ -16,7 +16,7 @@
                 <div class="field">
                     <label class="label">Election Promise</label>
                     <div class="control">
-                    <input class="input is-success" type="text" id="promise" name="promise" [(ngModel)]="candForm.promise">
+                        <input class="input is-success" (change)="select($event)" [(ngModel)]="candForm.video" type="file" accept="video/*" name="video">
                     </div>
                 </div>
 
@@ -33,11 +33,10 @@
                 </div>
             </div>
         </div>
-        <div id="scroll" class="column">
-            <div class="container" *ngFor="let item of candArray">
+        <div id="scroll" class="column c1">
+            <div class="container c2" *ngFor="let item of candArray">
                 <div id="card-cont" class="card">
                     <p class="text big"><b>{{ item.cand_name }}</b></p>
-                    <p class="text">Promise: {{ item.promise }}</p>
                 </div>
             </div>
         </div>

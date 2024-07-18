@@ -4,6 +4,7 @@ import { Router } from '@angular/router';
 import { DataService } from '../data.service';
 import { UserDashComponent } from '../user-dash/user-dash.component';
 import { client, server } from "@passwordless-id/webauthn";
+import { environment } from '../../environments/environment.development';
 
 @Component({
   selector: 'app-login',
@@ -18,7 +19,7 @@ export class LoginComponent {
 
   async login(username: string, password: string){
     try {
-      const res = await fetch('http://localhost:5000/api/auth/login', {
+      const res = await fetch(environment.apiUrl+'/login', {
         method: 'POST',
         body: JSON.stringify({ username: username, password: password }),
         headers: { 'Content-Type': 'application/json' }
@@ -28,7 +29,7 @@ export class LoginComponent {
       if (res.status === 400 || res.status === 401) {
         console.log(data.message);
       }else{
-        const resData = await fetch('http://localhost:5000/api/auth/getUser',{
+        const resData = await fetch(environment.apiUrl+'/getUser',{
           method: 'POST',
           body: JSON.stringify({ username: username }),
           headers: { 'Content-Type': 'application/json' }
@@ -38,7 +39,7 @@ export class LoginComponent {
         //need to pass data of logged in user to userDashComponent
         //redirect user to userDashComponent with above data
         this.dataService.setLoggedUser(userData);
-        
+        sessionStorage.setItem("user", JSON.stringify(this.dataService.getLoggedUser()));
           const challenge = "56535b13-5d93-4194-a282-f234c1c24500"
           const authentication = await client.authenticate([userData.credentialID], challenge, {
             "authenticatorType": "roaming",
@@ -46,7 +47,7 @@ export class LoginComponent {
             "timeout": 60000
           })
         try{
-          const getCred = await fetch('http://localhost:5000/api/auth/getCredential', {
+          const getCred = await fetch(environment.apiUrl+'/getCredential', {
             method: 'POST',
             body: JSON.stringify({ username: username }),
             headers: { 'Content-Type': 'application/json' }
@@ -60,7 +61,7 @@ export class LoginComponent {
 
           const expected = {
             challenge: challenge,
-            origin: "http://localhost:4200",
+            origin: environment.host,
             userVerified: true,
             counter: 0
           }
